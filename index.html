@@ -1,0 +1,520 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Build with AI / GDG Lawrence (Session #1) - Prompt Engineering &amp; Design: Best Practices</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements-tmp/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="buildwithai_session1"
+                  title="Build with AI / GDG Lawrence (Session #1) - Prompt Engineering &amp; Design: Best Practices"
+                  environment="web"
+                  feedback-link="https://gdg.community.dev/gdg-lawrence">
+    
+      <google-codelab-step label="Overview" duration="0">
+        <p>This codelab covers the essentials of prompt engineering, including some best practices.</p>
+<p>Learn more about prompt design in the <a href="https://colab.research.google.com/corgiredirector?site=https%3A%2F%2Fcloud.google.com%2Fvertex-ai%2Fdocs%2Fgenerative-ai%2Ftext%2Ftext-overview" target="_blank">official documentation</a>.</p>
+<h2 is-upgraded>Objective</h2>
+<p>In this notebook, you learn best practices around prompt engineering – how to design prompts to improve the quality of your responses.</p>
+<p>This notebook covers the following best practices for prompt engineering:</p>
+<ul>
+<li>Be concise</li>
+<li>Be specific and well-defined</li>
+<li>Ask one task at a time</li>
+<li>Turn generative tasks into classification tasks</li>
+<li>Improve response quality by including examples</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prompt engineering best practices" duration="0">
+        <p><strong>Prompt Engineering</strong> is the process of structuring text that can be interpreted and understood by a generative AI model. A prompt is natural language text describing the task that an AI should perform.</p>
+<p>Prompt engineering is all about how to design your prompts so that the response is what you were indeed hoping to see.</p>
+<p>The idea of using &#34;unfancy&#34; prompts is to minimize the noise in your prompt to reduce the possibility of the LLM misinterpreting the intent of the prompt. Below are a few guidelines on how to engineer &#34;unfancy&#34; prompts.</p>
+<p>In this section, you&#39;ll cover the following best practices when engineering prompts:</p>
+<ul>
+<li>Be concise</li>
+<li>Be specific, and well-defined</li>
+<li>Ask one task at a time</li>
+<li>Improve response quality by including examples</li>
+<li>Turn generative tasks to classification tasks to improve safety</li>
+</ul>
+<h2 is-upgraded>Be concise</h2>
+<p>🛑 Not recommended. The prompt below is unnecessarily verbose.</p>
+<pre><code>prompt = &#34;What do you think could be a good name for a flower shop that specializes in selling bouquets of dried flowers more than fresh flowers? Thank you!&#34;
+
+</code></pre>
+<p>✅ Recommended. The prompt below is to the point and concise.</p>
+<pre><code>prompt = &#34;Suggest a name for a flower shop that sells bouquets of dried flowers&#34;
+
+</code></pre>
+<h2 is-upgraded>Be specific, and well-defined</h2>
+<p>Suppose that you want to brainstorm creative ways to describe Earth.</p>
+<p>🛑 Not recommended. The prompt below is too generic.</p>
+<pre><code>prompt = &#34;Tell me about Earth&#34;
+
+</code></pre>
+<p>✅ Recommended. The prompt below is specific and well-defined.</p>
+<pre><code>prompt = &#34;Generate a list of ways that makes Earth unique compared to other planets&#34;
+
+</code></pre>
+<h2 is-upgraded>Ask one task at a time</h2>
+<p>🛑 Not recommended. The prompt below has two parts to the question that could be asked separately.</p>
+<pre><code>prompt = &#34;What&#39;s the best method of boiling water and why is the sky blue?&#34;
+
+</code></pre>
+<p>✅ Recommended. The prompts below asks one task a time.</p>
+<pre><code>prompt = &#34;What&#39;s the best method of boiling water?&#34;
+
+</code></pre>
+<pre><code>prompt = &#34;Why is the sky blue?&#34;
+
+</code></pre>
+<h2 is-upgraded>Watch out for hallucinations</h2>
+<p>Although LLMs have been trained on a large amount of data, they can generate text containing statements not grounded in truth or reality; these responses from the LLM are often referred to as &#34;hallucinations&#34; due to their limited memorization capabilities. Note that simply prompting the LLM to provide a citation isn&#39;t a fix to this problem, as there are instances of LLMs providing false or inaccurate citations. Dealing with hallucinations is a fundamental challenge of LLMs and an ongoing research area, so it is important to be cognizant that LLMs may seem to give you confident, correct-sounding statements that are in fact incorrect.</p>
+<p>Note that if you intend to use LLMs for the creative use cases, hallucinating could actually be quite useful.</p>
+<p>Try the prompt like the one below repeatedly. You may notice that sometimes it will confidently, but inaccurately, say &#34;The first elephant to visit the moon was Luna&#34;.</p>
+<pre><code>prompt = &#34;Who was the first elephant to visit the moon?&#34;
+
+</code></pre>
+<h2 is-upgraded>Turn generative tasks into classification tasks to reduce output variability</h2>
+<p>The prompt below results in an open-ended response, useful for brainstorming, but response is highly variable.</p>
+<pre><code>prompt = &#34;I&#39;m a high school student. Recommend me a programming activity to improve my skills.&#34;
+
+</code></pre>
+<h2 is-upgraded>Classification tasks reduces output variability</h2>
+<p>The prompt below results in a choice and may be useful if you want the output to be easier to control.</p>
+<pre><code>prompt = &#34;I&#39;m a high school student. Which of these activities do you suggest and why:
+a) learn Python
+b) learn Javascript
+c) learn Fortran
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Improve response quality by including examples</h2>
+<p>Another way to improve response quality is to add examples in your prompt. The LLM learns in-context from the examples on how to respond. Typically, one to five examples (shots) are enough to improve the quality of responses. Including too many examples can cause the model to over-fit the data and reduce the quality of responses.</p>
+<p>Similar to classical model training, the quality and distribution of the examples is very important. Pick examples that are representative of the scenarios that you need the model to learn, and keep the distribution of the examples (e.g. number of examples per class in the case of classification) aligned with your actual distribution.</p>
+<h3 is-upgraded>Zero-shot prompt</h3>
+<p>Below is an example of zero-shot prompting, where you don&#39;t provide any examples to the LLM within the prompt itself.</p>
+<pre><code>prompt = &#34;Decide whether a Tweet&#39;s sentiment is positive, neutral, or negative.
+
+Tweet: I loved the new YouTube video you made!
+Sentiment:
+&#34;
+
+</code></pre>
+<h3 is-upgraded>One-shot prompt</h3>
+<p>Below is an example of one-shot prompting, where you provide one example to the LLM within the prompt to give some guidance on what type of response you want.</p>
+<pre><code>prompt = &#34;Decide whether a Tweet&#39;s sentiment is positive, neutral, or negative.
+
+Tweet: I loved the new YouTube video you made!
+Sentiment: positive
+
+Tweet: That was awful. Super boring 😠
+Sentiment:
+&#34;
+
+</code></pre>
+<h3 is-upgraded>Few-shot prompt</h3>
+<p>Below is an example of few-shot prompting, where you provide a few examples to the LLM within the prompt to give some guidance on what type of response you want.</p>
+<pre><code>prompt = &#34;Decide whether a Tweet&#39;s sentiment is positive, neutral, or negative.
+
+Tweet: I loved the new YouTube video you made!
+Sentiment: positive
+
+Tweet: That was awful. Super boring 😠
+Sentiment: negative
+
+Tweet: Something surprised me about this video - it was actually original. It was not the same old recycled stuff that I always see. Watch it - you will not regret it.
+Sentiment:
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Choosing between zero-shot, one-shot, few-shot prompting methods</h2>
+<p>Which prompt technique to use will solely depends on your goal. The zero-shot prompts are more open-ended and can give you creative answers, while one-shot and few-shot prompts teach the model how to behave so you can get more predictable answers that are consistent with the examples provided.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Question Answering with Generative Models on Vertex AI" duration="0">
+        <h2 is-upgraded>Overview</h2>
+<p>Large language models can be used for various natural language processing tasks, including question-answering (Q&amp;A). These models are trained on a vast amount text data and can generate high-quality responses to a wide range of questions. One thing to note here is that most models have cutoff dates regarding their knowledge, and asking anything too recent might yield an incomplete, imaginative or incorrect answer (i.e. a hallucination).</p>
+<h2 is-upgraded>Objective</h2>
+<p>By the end of the notebook, you should be able to write prompts for the following:</p>
+<ul>
+<li>Open domain questions:</li>
+<li>Zero-shot prompting</li>
+<li>Few-shot prompting</li>
+<li>Closed domain questions:</li>
+<li>Providing custom knowledge as context</li>
+<li>Instruction-tune the outputs</li>
+<li>Few-shot prompting</li>
+<li>Getting Started</li>
+</ul>
+<h2 is-upgraded>Question Answering</h2>
+<p>Question-answering capabilities require providing a prompt or a question that the model can use to generate a response. The prompt can be a few words or a few complete sentences, depending on the complexity of the question.</p>
+<p>When creating a question-answering prompt, it is essential to be specific and provide as much context as possible. It helps the model understand the intent behind the question and generate a relevant response. For example, if you want to ask:</p>
+<pre><code>&#34;What is the capital of France?&#34;,
+
+# then a good prompt could be:
+
+&#34;Please tell me the name of the city that serves as the capital of France.&#34;
+
+</code></pre>
+<p>In addition to being specific, the prompt should also be grammatically correct and free of spelling errors. It helps the model generate a response that is easy to understand and contains fewer errors or inaccuracies.</p>
+<p>By providing specific, context-rich prompts, you can help the model understand the intent behind the question and generate accurate and relevant responses.</p>
+<p>Below are some differences between the open domain and closed domain categories for question-answering prompts.</p>
+<p><strong>Open domain</strong>: All questions whose answers are available online already. They can belong to any category, like history, geography, countries, politics, chemistry, etc. These include trivia or general knowledge questions, like:</p>
+<pre><code>&#34;
+Q: Who won the Olympic gold in swimming?
+Q: Who is the President of [given country]?
+Q: Who wrote [specific book]?
+&#34;
+
+</code></pre>
+<p>Keep in mind the training cutoff of generative models, as questions involving information more recent than what the model was trained on might give incorrect or imaginative answers.</p>
+<p><strong>Closed domain</strong>: If you have some internal knowledge base not available on the public internet, then those belong to the closed domain category. You can pass that &#34;private&#34; knowledge as context to the model. If prompted correctly, the model is more likely to answer from within the context provided and less likely to give answers beyond that from the open internet. Consider the example of building a Q&amp;A bot over your internal product documentation. In this case, you can pass the complete documentation to the model and prompt it only to answer based on that.</p>
+<p>Typical prompt for closed domain:</p>
+<pre><code>prompt = &#34; Answer from the below context: \n\n
+           context: {your knowledge base} \n
+           question: {question specific to that knowledge base}  \n
+           answer: {to be predicted by model} \n
+        &#34;
+
+</code></pre>
+<h2 is-upgraded>Open Domain</h2>
+<h2 is-upgraded>Zero-shot prompting</h2>
+<pre><code>prompt = &#34;Q: Who was President of the United States in 1955? Which party did he belong to?\n
+            A:
+         &#34;
+</code></pre>
+<pre><code>prompt = &#34;Q: What is the tallest mountain in the world?\n
+            A:
+         &#34;
+
+</code></pre>
+<h2 is-upgraded>Few-shot prompting</h2>
+<p>Let&#39;s say you want to a get a short answer from the model (like only a specific name). To do so, you can leverage a few-shot prompt and provide examples to the model to illustrate the expected behavior.</p>
+<pre><code>prompt = &#34;Q: Who is the current President of France?\n
+            A: Emmanuel Macron \n\n
+
+            Q: Who invented the telephone? \n
+            A: Alexander Graham Bell \n\n
+
+            Q: Who wrote the novel \&#34;1984\&#34;?
+            A: George Orwell
+
+            Q: Who discovered penicillin?
+            A:
+         &#34;
+
+</code></pre>
+<pre><code>prompt = &#34;
+Context:
+The term &#39;artificial intelligence&#39; was first coined by John McCarthy in 1956. Since then, AI has developed into a vast
+field with numerous applications, ranging from self-driving cars to virtual assistants like Siri and Alexa.
+
+Question:
+What is artificial intelligence?
+
+Answer:
+Artificial intelligence refers to the simulation of human intelligence in machines that are programmed to think and learn like humans.
+
+---
+
+Context:
+The Wright brothers, Orville and Wilbur, were two American aviation pioneers who are credited with inventing and
+building the world&#39;s first successful airplane and making the first controlled, powered and sustained heavier-than-air human flight,
+ on December 17, 1903.
+
+Question:
+Who were the Wright brothers?
+
+Answer:
+The Wright brothers were American aviation pioneers who invented and built the world&#39;s first successful airplane
+and made the first controlled, powered and sustained heavier-than-air human flight, on December 17, 1903.
+
+---
+
+Context:
+The Mona Lisa is a 16th-century portrait painted by Leonardo da Vinci during the Italian Renaissance. It is one of
+the most famous paintings in the world, known for the enigmatic smile of the woman depicted in the painting.
+
+Question:
+Who painted the Mona Lisa?
+
+Answer:
+
+&#34;
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Text Classification with Generative Models on Vertex AI" duration="0">
+        <h2 is-upgraded>Overview</h2>
+<p>Generative models like PaLM 2 are powerful language models used for various natural language processing (NLP) tasks. One of those is text classification, which involves assigning one or more categories to a given piece of text. Although text classification can be done using traditional NLP techniques, LLMs can perform classification by providing prompts (as opposed to domain-specific labeled data), which can accelerate the time it takes to build a text classification solution. Classification models based on LLMs can be further tuned with many examples via custom model training, but that is beyond the scope of this notebook.</p>
+<p>In this notebook, you will explore how to do text classification using prompts with the PaLM API. Learn more about classification prompts in the official documentation.</p>
+<h2 is-upgraded>Objective</h2>
+<p>By the end of the codelab, you should be able to use a large language model to perform various classification tasks, including:</p>
+<ul>
+<li>Zero-shot prompting text classification</li>
+<li>Few-shot prompting text classification</li>
+<li>Common tasks: <ul>
+<li>Sentiment analysis</li>
+<li>Topic classification</li>
+<li>Spam detection</li>
+<li>Intent recognition</li>
+<li>Language identification</li>
+<li>Toxicity detection</li>
+<li>Emotion detection</li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>Text Classification</h2>
+<p>In the section below, you will explore zero-shot prompting, few-shot prompting, and some common types of text classification tasks.</p>
+<h2 is-upgraded>Zero-shot prompting</h2>
+<p>Zero-shot prompting is where you do not provide examples with labels, and rely on the LLM to make the classification on its own.</p>
+<pre><code>prompt = &#34;
+Classify the following:\n
+text: &#39;I saw a furry animal in the park today with a long tail and big eyes.&#39;
+label: dogs, cats
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Few-shot prompting</h2>
+<p>With few-shot prompting, you provide examples to the PaLM model and expect it to predict classes based on the provided examples.</p>
+<pre><code>prompt = &#34;
+What is the topic for a given news headline? \n
+- business \n
+- entertainment \n
+- health \n
+- sports \n
+- technology \n\n
+
+Text: Pixel 7 Pro Expert Hands On Review. \n
+The answer is: technology \n
+
+Text: Quit smoking? \n
+The answer is: health \n
+
+Text: Birdies or bogeys? Top 5 tips to hit under par \n
+The answer is: sports \n
+
+Text: Relief from local minimum-wage hike looking more remote \n
+The answer is: business \n
+
+Text: You won&#39;t guess who just arrived in Bari, Italy for the movie premiere. \n
+The answer is:
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Other classification examples</h2>
+<p>Explore some more common text classification prompts below, which are all based on zero-shot prompts. You can also turn some of these into few-shot prompts by providing your own custom examples of text and the associated output classes.</p>
+<h2 is-upgraded>Topic classification</h2>
+<pre><code>prompt = &#34;
+Classify a piece of text into one of several predefined topics, such as sports, politics, or entertainment. \n
+text: President Biden will be visiting India in the month of March to discuss a few opportunites. \n
+class:
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Spam detection</h2>
+<pre><code>prompt = &#34;
+Given an email, classify it as spam or not spam. \n
+email: hi user, \n
+      you have been selected as a winner of the lotery and can win upto 1 million dollar. \n
+      kindly share your bank details and we can proceed from there. \n\n
+
+      from, \n
+      US Official Lottry Depatmint
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Intent recognition</h2>
+<pre><code>prompt = &#34;
+Given a user&#39;s input, classify their intent, such as &#39;finding information&#39;, &#39;making a reservation&#39;, or &#39;placing an order&#39;. \n
+user input: Hi, can you please book a table for two at Juan for May 1?
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Language identification</h2>
+<pre><code>prompt = &#34;
+Given a piece of text, classify the language it is written in. \n
+text: Selam nasıl gidiyor?
+language:
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Toxicity detection</h2>
+<pre><code>prompt = &#34;
+Given a piece of text, classify it as toxic or non-toxic. \n
+text: i love sunny days
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Emotion detection</h2>
+<pre><code>prompt = &#34;
+Given a piece of text, classify the emotion it conveys, such as happiness, or anger. \n
+text: I&#39;m still so delighted from yesterday&#39;s news
+&#34;
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Text Summarization with Generative Models on Vertex AI" duration="0">
+        <h2 is-upgraded>Overview</h2>
+<p>Text summarization produces a concise and fluent summary of a longer text document. There are two main text summarization types: extractive and abstractive. Extractive summarization involves selecting critical sentences from the original text and combining them to form a summary. Abstractive summarization involves generating new sentences representing the original text&#39;s main points. In this notebook, you go through a few examples of how large language models can help with generating summaries based on text.</p>
+<h2 is-upgraded>Text Summarization</h2>
+<h3 is-upgraded>Transcript summarization</h3>
+<p>In this first example, you summarize a piece of text on quantum computing.</p>
+<pre><code>prompt = &#34;
+Provide a very short summary, no more than three sentences, for the following article:
+
+Our quantum computers work by manipulating qubits in an orchestrated fashion that we call quantum algorithms.
+The challenge is that qubits are so sensitive that even stray light can cause calculation errors — and the problem worsens as quantum computers grow.
+This has significant consequences, since the best quantum algorithms that we know for running useful applications require the error rates of our qubits to be far lower than we have today.
+To bridge this gap, we will need quantum error correction.
+Quantum error correction protects information by encoding it across multiple physical qubits to form a &#39;logical qubit,&#39; and is believed to be the only way to produce a large-scale quantum computer with error rates low enough for useful calculations.
+Instead of computing on the individual qubits themselves, we will then compute on logical qubits. By encoding larger numbers of physical qubits on our quantum processor into one logical qubit, we hope to reduce the error rates to enable useful quantum algorithms.
+
+Summary:
+
+&#34;
+
+</code></pre>
+<p>Instead of a summary, we can ask for a TL;DR (&#34;too long; didn&#39;t read&#34;). You can compare the differences between the outputs generated.</p>
+<pre><code>prompt = &#34;&#34;&#34;
+Provide a TL;DR for the following article:
+
+Our quantum computers work by manipulating qubits in an orchestrated fashion that we call quantum algorithms. 
+The challenge is that qubits are so sensitive that even stray light can cause calculation errors — and the problem worsens as quantum computers grow. 
+This has significant consequences, since the best quantum algorithms that we know for running useful applications require the error rates of our qubits to be far lower than we have today. 
+To bridge this gap, we will need quantum error correction. 
+Quantum error correction protects information by encoding it across multiple physical qubits to form a &#39;logical qubit,&#39; and is believed to be the only way to produce a large-scale quantum computer with error rates low enough for useful calculations. 
+Instead of computing on the individual qubits themselves, we will then compute on logical qubits. By encoding larger numbers of physical qubits on our quantum processor into one logical qubit, we hope to reduce the error rates to enable useful quantum algorithms.
+
+TL;DR:
+&#34;&#34;&#34;
+
+</code></pre>
+<h2 is-upgraded>Summarize text into bullet points</h2>
+<p>In the following example, you use same text on quantum computing, but ask the model to summarize it in bullet-point form. Feel free to change the prompt.</p>
+<pre><code>prompt = &#34;
+Provide a very short summary in four bullet points for the following article:
+
+Our quantum computers work by manipulating qubits in an orchestrated fashion that we call quantum algorithms.
+The challenge is that qubits are so sensitive that even stray light can cause calculation errors — and the problem worsens as quantum computers grow.
+This has significant consequences, since the best quantum algorithms that we know for running useful applications require the error rates of our qubits to be far lower than we have today.
+To bridge this gap, we will need quantum error correction.
+Quantum error correction protects information by encoding it across multiple physical qubits to form a &#39;logical qubit,&#39; and is believed to be the only way to produce a large-scale quantum computer with error rates low enough for useful calculations.
+Instead of computing on the individual qubits themselves, we will then compute on logical qubits. By encoding larger numbers of physical qubits on our quantum processor into one logical qubit, we hope to reduce the error rates to enable useful quantum algorithms.
+
+Bulletpoints:
+
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Dialogue summarization with to-dos</h2>
+<p>Dialogue summarization involves condensing a conversation into a shorter format so that you don&#39;t need to read the whole discussion but can leverage a summary. In this example, you ask the model to summarize an example conversation between an online retail customer and a support agent, and include to-dos at the end.</p>
+<pre><code>prompt = &#34;
+Please generate a summary of the following conversation and at the end summarize the to-do&#39;s for the support Agent:
+
+Customer: Hi, I&#39;m Larry, and I received the wrong item.
+
+Support Agent: Hi, Larry. How would you like to see this resolved?
+
+Customer: That&#39;s alright. I want to return the item and get a refund, please.
+
+Support Agent: Of course. I can process the refund for you now. Can I have your order number, please?
+
+Customer: It&#39;s [ORDER NUMBER].
+
+Support Agent: Thank you. I&#39;ve processed the refund, and you will receive your money back within 14 days.
+
+Customer: Thank you very much.
+
+Support Agent: You&#39;re welcome, Larry. Have a good day!
+
+Summary:
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Hashtag tokenization</h2>
+<p>Hashtag tokenization is the process of taking a piece of text and getting the hashtag &#34;tokens&#34; out of it. You can use this, for example, if you want to generate hashtags for your social media campaigns. In this example, you take this tweet from Google Cloud and generate some hashtags you can use.</p>
+<pre><code>prompt = &#34;
+Tokenize the hashtags of this tweet:
+
+Google Cloud
+@googlecloud
+How can data help our changing planet? 🌎
+
+In honor of #EarthDay this weekend, we&#39;re proud to share how we&#39;re partnering with
+@ClimateEngine
+ to harness the power of geospatial data and drive toward a more sustainable future.
+
+Check out how → https://goo.gle/3mOUfts
+&#34;
+
+</code></pre>
+<h2 is-upgraded>Title &amp; heading generation</h2>
+<p>Below, you ask the model to generate five options for possible title/heading combos for a given piece of text.</p>
+<pre><code>prompt = &#34;
+Write a title for this text, give me five options:
+Whether helping physicians identify disease or finding photos of &#39;hugs,&#39; AI is behind a lot of the work we do at Google. And at our Arts &amp; Culture Lab in Paris, we&#39;ve been experimenting with how AI can be used for the benefit of culture.
+Today, we&#39;re sharing our latest experiments—prototypes that build on seven years of work in partnership the 1,500 cultural institutions around the world.
+Each of these experimental applications runs AI algorithms in the background to let you unearth cultural connections hidden in archives—and even find artworks that match your home decor.
+&#34;
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Wrap-up" duration="0">
+        <p>In this codelab, we accomplished the following:</p>
+<ul>
+<li>Basics of prompt engineering and best practices</li>
+<li>Question Answering</li>
+<li>Text Classification</li>
+<li>Text Summarization</li>
+</ul>
+<h2 is-upgraded>Please don&#39;t forget to sign up for our community:</h2>
+<ul>
+<li>On <a href="gdg.community.dev/gdg-lawrence" target="_blank">GDG Community</a></li>
+</ul>
+<h3 is-upgraded>Happy Prompting!</h3>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements-tmp/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements-tmp/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements-tmp/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements-tmp/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
